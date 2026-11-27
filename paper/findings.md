@@ -1,6 +1,6 @@
 # Findings (Bước 3.4) – cấu hình C2, tập đã loại trùng
 
-**Nguồn số liệu:** `tables/top_terms_C2.csv`, `tables/table1.csv`, `tables/codebook_labels.csv` và output trong `notebooks/main.ipynb` (commit `1c3c23d`). Các số này được đọc lại từ file, chưa chạy lại notebook (thư mục `data/` không nằm trong repo).
+**Nguồn số liệu:** `tables/top_terms_C2.csv`, `tables/table1.csv`, `tables/codebook_labels.csv` và output trong `notebooks/main.ipynb` (commit `1c3c23d`). F1–F8 đọc từ các file trên; F9–F11 lấy từ output mục 5 của notebook và được kiểm tra lại bằng cách chạy lại `run_analysis` trên `data/processed/sms_dedup.csv` và `data/raw/SMSSpamCollection` (5 test trong `src/test_pipeline.py` đều đạt).
 
 **Cấu hình:** C2 = unigram + bigram, giữ £ $ € ! ?, không loại stopword; `min_df` = 5; lọc DF ≥ 2% trong chính lớp; N = 20 mỗi phía; Holm trên 40 phép thử; seed = 42.
 
@@ -69,8 +69,35 @@
 
 ---
 
+## F9. Độ ổn định theo tiền xử lý: Jaccard Top-20 (RQ3, H3)
+
+- **Describe:** Góc nhìn chính (ii) – chỉ unigram, J giữa các cấu hình (Fig. 4a–b; `tables/jaccard_unigram_*.csv`):
+  - **Spam:** C1–C2 = 1,00; C3–C4 = 0,90; C1/C2 so với C3/C4 = 0,48 (13 term chung trên 27 term hợp: call, claim, free, mobile, prize, reply, stop, text, txt, www, 150p, 1, 2).
+  - **Ham:** C1–C2 = 0,90; C3–C4 = 0,90; C1/C2 so với C3/C4 chỉ 0,14–0,18 (C1 và C3 chung 5 term: come, got, gt, lt, ok).
+  - Góc nhìn (i) toàn bộ term (Fig. 4c–d): Spam C1/C2 so với C3/C4 = 0,43–0,48; Ham = 0,14–0,18; C1–C2 giảm còn 0,90 (Spam) và 0,82 (Ham) vì C2 có bigram. Góc nhìn (iii) chỉ chữ cái (bảng phụ lục): Spam C1–C2 = 0,82; Ham C1/C2 so với C3/C4 = 0,14.
+- **Notice:** Hai lớp phản ứng rất khác nhau. Phía Spam giữ được lõi nội dung khi đổi cấu hình, nhưng mất £, !, to, your, from, or, now (C1 → C3) và thêm 6 term mới (4, cash, contact, service, uk, urgent). Phía Ham gần như bị thay hẳn: 15/20 term của C1 (i, my, me, ?, i'm, it, in, but, that, so, not, how, at, you, what) không còn trong C3, và C3 gồm các từ nội dung/chat (home, going, good, later, lor, da, k, ü…). Thêm bigram (C1 → C2, C3 → C4) hầu như không đổi tập unigram (Spam 1,00; Ham 0,90).
+- **Limit:** Lưới 2×2 đổi đồng thời stopword NLTK và bỏ £ ! ?; chưa tách được từng yếu tố nên chỉ được nói "phù hợp với việc stopword loại các đại từ/từ chức năng ở phía Ham", không nói là nguyên nhân. Jaccard chỉ so tập Top-20, không so thứ hạng; Spam 0,48 sát ngưỡng 0,5 nên nhạy với đúng một vài term. Ngưỡng 0,5 là quy ước của nghiên cứu.
+- **Check next:** (nếu còn giờ) one-factor-at-a-time từ C2 để tách stopwords, dấu câu, n-gram; đọc vài tin chứa term mới của C3 (urgent, cash, contact, uk). Trong paper, báo cáo hai lớp riêng và diễn giải theo góc nhìn (ii).
+
+## F10. Sensitivity S1: corpus gốc (có trùng) so với đã loại trùng (RQ3)
+
+- **Describe:** Chạy lại C2 trên corpus gốc (n_Spam = 747, n_Ham = 4.827): Jaccard Top-20 = **1,00** (Spam, 20/20 term chung) và **0,90** (Ham, 19/20 chung; tập đã loại trùng có "ü", tập gốc có "i'll"). Tỷ lệ cùng dấu Δ = **1,00** trên 40 term; Spearman của rank-biserial r giữa hai tập = **0,996** (39 term chung). Holm < 0,05 vẫn ở 39/40 term; "you" vẫn là ngoại lệ (p_Holm = 0,731, r = −0,006 so với 0,657 và −0,009).
+- **Notice:** Việc loại 415 tin trùng (310 Ham, 105 Spam) hầu như không đổi danh sách term, hướng của Δ hay cỡ hiệu ứng.
+- **Limit:** Chỉ loại trùng chính xác; near-duplicate còn nên S1 không cho biết kết quả có vững khi loại cả chúng. Tỷ lệ cùng dấu Δ tính trên 40 term đã chọn theo Δ nên dễ bằng 1. Không nên so P-value giữa hai tập (corpus gốc có prevalence và độ chính xác ảo).
+- **Check next:** S2 (ngưỡng DF 1% và 5%) nếu còn giờ; nêu S1 trong Methods và Supplementary.
+
+## F11. Kết luận H3
+
+- **Describe:** Điều kiện đã khóa: Jaccard Top-20 unigram ≥ 0,5 giữa mọi cặp cấu hình ở cả hai lớp. Spam: min = 0,48 (< 0,5). Ham: min = 0,14 (< 0,5). Vế thứ hai (Jaccard toàn bộ term thấp hơn unigram): đúng ở một số cặp (Spam C1–C2 0,90 so với 1,00; Spam C2–C3 0,43 so với 0,48; Ham C1–C2 0,82 so với 0,90), bằng nhau ở các cặp còn lại, và không cặp nào cao hơn.
+- **Notice:** H3 **bị bác bỏ** theo ngưỡng đã đăng ký, chủ yếu do phía Ham; phía Spam chỉ thiếu 0,02. Đây là kết quả hợp lệ và nên báo cáo từng lớp riêng.
+- **Limit:** Không đổi ngưỡng sau khi đã thấy kết quả; ngưỡng 0,5 không phải chuẩn học thuật.
+- **Check next:** Ghi H3 vào Results (chỉ mô tả) và Discussion (diễn giải ở mức "phù hợp với"); ghi vào "Nhật ký sai lệch" nếu có thay đổi quy ước.
+
+---
+
 ## Việc cần ghi vào README / paper
 
 - **Methods:** số tuyệt đối của ngưỡng DF 2% (≥ 13 tin Spam, ≥ 91 tin Ham); Top-20 (1,2) có n-gram chồng lấn ("now"/"now !", "lt"/"gt"/"lt gt"); cảnh báo stop_words/token_pattern ở C3/C4 nếu xuất hiện.
 - **Results/Discussion:** H1 chỉ ủng hộ phía Spam (13/20), không ủng hộ phía Ham (10/20); H2 ủng hộ (18/20); "you" là ví dụ Δ và DF nghịch dấu, "you" nằm trong Top-20 phía Ham dù Δ_prev dương, và đây là ví dụ rất tốt cho Discussion; claim/prize có Δ_int dương do quy ước c_H = 0 chứ không phải cường độ cao hơn.
-- **Còn thiếu cho Gate cuối Ngày 1:** Bước 5 (4 cấu hình, Jaccard, S1) để đánh giá H3; hiện chưa có kết quả nào cho RQ3.
+- **Results/Discussion (RQ3):** H3 bị bác bỏ (Spam min 0,48; Ham min 0,14); S1 gần như không đổi kết quả (Jaccard 1,00 / 0,90; cùng dấu Δ 100%).
+- **Gate Ngày 1:** đã có kết quả cho cả 3 RQ (F1–F11), 5 test đạt, 4 hình nháp và Table 1–3.

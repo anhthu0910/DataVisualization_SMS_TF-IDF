@@ -38,7 +38,7 @@ Nghiên cứu so sánh từ vựng của tin nhắn **spam** và tin nhắn thư
 | Trích dẫn | T. A. Almeida and J. M. Gómez Hidalgo, "SMS Spam Collection," UCI Machine Learning Repository. |
 | Quy mô gốc | 5.574 tin nhắn, nhãn `ham` / `spam`, file tab-separated, không có tiêu đề cột |
 | Cách lấy | Tải zip từ trang UCI, giải nén, đặt file `SMSSpamCollection` vào `data/raw/`. **Không sửa file gốc.** |
-| Giấy phép/chi phí | Miễn phí, tải công khai [ĐIỀN: ghi lại giấy phép nếu trang UCI nêu] |
+| Giấy phép/chi phí | Miễn phí, tải công khai Creative Commons Attribution 4.0 (CC BY 4.0) theo trang UCI; ghi nguồn khi dùng lại |
 
 ### Xử lý tin trùng (tập chính = đã loại trùng)
 
@@ -50,11 +50,11 @@ Nghiên cứu so sánh từ vựng của tin nhắn **spam** và tin nhắn thư
 
 | | Gốc | Sau loại trùng |
 |---|---|---|
-| Tổng số tin | [ĐIỀN] | [ĐIỀN] |
-| Ham | [ĐIỀN] | [ĐIỀN] |
-| Spam | [ĐIỀN] | [ĐIỀN] |
-| Số nhóm trùng | [ĐIỀN] | |
-| Số nhóm mâu thuẫn nhãn | [ĐIỀN] | |
+| Tổng số tin | 5.574 | 5.159 |
+| Ham | 4.827 (86,6%) | 4.517 (87,6%) |
+| Spam | 747 (13,4%) | 642 (12,4%) |
+| Số nhóm trùng | 290 | |
+| Số nhóm mâu thuẫn nhãn | 0 | |
 
 ---
 
@@ -83,7 +83,7 @@ sms-tfidf/
 
 ## 4. Môi trường và cách tái lập
 
-**Môi trường:** Python [ĐIỀN: phiên bản, ví dụ 3.12]; các gói và phiên bản chính nằm trong `requirements.txt`
+**Môi trường:** Python 3.12; các gói và phiên bản chính nằm trong `requirements.txt`
 (pandas, numpy, scipy, scikit-learn, statsmodels, matplotlib, nltk, pytest, jupyterlab).
 
 ```bash
@@ -104,7 +104,7 @@ jupyter nbconvert --to notebook --execute notebooks/main.ipynb --output executed
 
 - **Seed:** 42 cho mọi bước ngẫu nhiên (mẫu đọc tin thật, split-sample nếu có).
 - **Thứ tự tạo ra kết quả:** notebook đọc dữ liệu → loại trùng → `run_analysis` → xuất `tables/*.csv` → vẽ `figures/*.pdf`.
-- **Lưu ý đường dẫn:** notebook dùng đường dẫn tương đối so với thư mục chứa notebook. [ĐIỀN: ghi lại quy ước bạn dùng, ví dụ `../data/...`]
+- **Lưu ý đường dẫn:** notebook dùng đường dẫn tương đối so với thư mục chứa notebook. Notebook tự tìm `data/raw/SMSSpamCollection` ở thư mục hiện tại hoặc thư mục cha, nên chạy được cả khi mở từ gốc repo lẫn từ `notebooks/`; đầu ra ghi vào `../tables/` và `../figures/`.
 
 ### Truy vết số liệu
 
@@ -196,7 +196,7 @@ TfidfVectorizer được fit trên **toàn bộ** corpus phân tích; thống k�
 ## 6. Đăng ký trước (pre-registration)
 
 > Mục này được viết và commit **trước khi chạy bất kỳ phân tích TF-IDF nào**.
-> **Commit đăng ký:** `[ĐIỀN: git commit hash]` · **Thời điểm:** `[ĐIỀN: ngày giờ]`
+> **Commit đăng ký:** `600f245` · **Thời điểm:** `2026-11-26 18:06:35 +0700`
 
 ### 6.1 Giả thuyết
 
@@ -246,7 +246,7 @@ Giả thuyết bị bác bỏ vẫn là kết quả hợp lệ và sẽ được
 
 | Thời điểm | Sai lệch | Lý do | Ảnh hưởng đến H1 |
 |---|---|---|---|
-| | | | |
+| 2026-11-27 | Nhãn codebook được điền và commit chung với bước đánh giá H1 (commit `1c3c23d`, "H1 evaluation"), không phải commit riêng "Codebook labels (before interpretation)" | Quy trình ban đầu yêu cầu commit riêng trước khi đếm | Không đổi codebook hay ngưỡng; kết quả H1 vẫn tính theo quy tắc đã khóa |
 
 ### 6.3 Tham số đã khóa
 
@@ -269,13 +269,13 @@ Mọi con số dưới đây **phải khớp** các file trong `tables/`. Không
 
 | Mục | Vị trí | Trạng thái |
 |---|---|---|
-| Table 1: đặc điểm dataset, trùng lặp, độ dài | `tables/table1.csv` | [ĐIỀN] |
-| Top-20 mỗi phía (bảng tidy C2) | `tables/top_terms_C2.csv` | [ĐIỀN] |
-| Table 2: m, DF + Wilson CI, c, Δ, Δprev, Δint | `tables/table2_top_terms.csv` | [ĐIỀN] |
-| Table 3: Mann-Whitney, p Holm, r, D, LPR | `tables/table3_inference.csv` | [ĐIỀN] |
-| Ma trận Jaccard | `tables/jaccard_*.csv` | [ĐIỀN] |
-| Sensitivity S1 | [ĐIỀN: file/ô notebook] | [ĐIỀN] |
-| Kết luận H1 / H2 / H3 | `findings.md` | H1 chỉ ủng hộ phía Spam (13/20), không ủng hộ phía Ham (10/20); H2 ủng hộ (18/20); |
+| Table 1: đặc điểm dataset, trùng lặp, độ dài | `tables/table1.csv` | Xong |
+| Top-20 mỗi phía (bảng tidy C2) | `tables/top_terms_C2.csv` | Xong |
+| Table 2: m, DF + Wilson CI, c, Δ, Δprev, Δint | `tables/table2_top_terms.csv` | Xong |
+| Table 3: Mann-Whitney, p Holm, r, D, LPR | `tables/table3_inference.csv` | Xong (Holm < 0,05 ở 39/40 term) |
+| Ma trận Jaccard | `tables/jaccard_*.csv` | Xong (3 góc nhìn × 2 lớp) |
+| Sensitivity S1 | `notebooks/main.ipynb`, mục 5.2; tóm tắt ở `paper/findings.md` F10 | Xong (Jaccard 1,00 Spam / 0,90 Ham; cùng dấu Δ 100%) |
+| Kết luận H1 / H2 / H3 | `findings.md` | H1 chỉ ủng hộ phía Spam (13/20), không ủng hộ phía Ham (10/20); H2 ủng hộ (18/20); H3 bị bác bỏ (Jaccard unigram min 0,48 Spam, 0,14 Ham) |
 
 ---
 
@@ -283,15 +283,15 @@ Mọi con số dưới đây **phải khớp** các file trong `tables/`. Không
 
 > Phần này phải phản ánh **đúng những gì bạn thực sự đã làm**. Sửa mọi dòng cho khớp thực tế.
 
-- **Công cụ AI đã dùng:** [ĐIỀN: tên công cụ, phiên bản nếu biết]
-- **Dùng cho việc gì:** [ĐIỀN: ví dụ gợi ý lộ trình, soạn code mẫu, soát lỗi, góp ý cấu trúc paper]
-- **Phần do tôi tự làm/quyết định:** [ĐIỀN: ví dụ chọn đề tài, định nghĩa distinctive, viết codebook, diễn giải kết quả, viết paper]
+- **Công cụ AI đã dùng:** Claude (Anthropic)
+- **Dùng cho việc gì:** gợi ý lộ trình 2 ngày, soạn code mẫu và hàm vẽ, soát lỗi và rà soát repo
+- **Phần do tôi tự làm/quyết định:** chọn đề tài, chạy toàn bộ phân tích, gán nhãn codebook, đọc tin thật, diễn giải kết quả, viết paper
 - **Cách tôi kiểm chứng đầu ra của AI:**
   - Chạy 5 test tự động; tính tay ví dụ mini 3 tin và so với scikit-learn.
   - Đối chiếu công thức trong code với mục 3 của Research Plan v2.
   - Đọc tin thật cho các term trong Top-20 để kiểm tra ngữ cảnh.
   - Đối chiếu từng con số trong paper/slides với `tables/`.
-  - Tra lại mọi tài liệu tham khảo từ trang gốc, không chép từ AI. [ĐIỀN: xác nhận nếu đúng]
+  - Tra lại mọi tài liệu tham khảo từ trang gốc, không chép từ AI. (xác nhận trước khi nộp)
 
 ---
 
@@ -327,4 +327,4 @@ Mọi con số dưới đây **phải khớp** các file trong `tables/`. Không
 
 Các nguồn đề xuất thêm trong plan (Mann-Whitney 1947; Wilson 1927; Newcombe 1998; Nothman et al. 2018) **cần tra lại thông tin từ trang gốc** trước khi đưa vào paper; chưa liệt kê ở đây cho đến khi được xác minh.
 
-Phần mềm dùng trong phân tích (cần cite trong paper): scikit-learn, SciPy, statsmodels, NLTK, pandas, NumPy, Matplotlib. [ĐIỀN: bổ sung phiên bản từ `requirements.txt`]
+Phần mềm dùng trong phân tích (cần cite trong paper): scikit-learn, SciPy, statsmodels, NLTK, pandas, NumPy, Matplotlib. Phiên bản: scikit-learn 1.9.1, SciPy 1.18.1, statsmodels 0.15.0, NLTK 3.10.4, pandas 3.1.1, NumPy 2.5.5, Matplotlib 3.11.2.
