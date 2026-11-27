@@ -72,5 +72,5 @@
 ## Việc cần ghi vào README / paper
 
 - **Methods:** số tuyệt đối của ngưỡng DF 2% (≥ 13 tin Spam, ≥ 91 tin Ham); Top-20 (1,2) có n-gram chồng lấn ("now"/"now !", "lt"/"gt"/"lt gt"); cảnh báo stop_words/token_pattern ở C3/C4 nếu xuất hiện.
-- **Results/Discussion:** H1 chỉ ủng hộ phía Spam (13/20), không ủng hộ phía Ham (10/20); H2 ủng hộ (18/20); "you" là ví dụ Δ và DF nghịch dấu; claim/prize có Δ_int dương do quy ước c_H = 0.
+- **Results/Discussion:** H1 chỉ ủng hộ phía Spam (13/20), không ủng hộ phía Ham (10/20); H2 ủng hộ (18/20); "you" là ví dụ Δ và DF nghịch dấu, "you" nằm trong Top-20 phía Ham dù Δ_prev dương, và đây là ví dụ rất tốt cho Discussion; claim/prize có Δ_int dương do quy ước c_H = 0 chứ không phải cường độ cao hơn.
 - **Còn thiếu cho Gate cuối Ngày 1:** Bước 5 (4 cấu hình, Jaccard, S1) để đánh giá H3; hiện chưa có kết quả nào cho RQ3.
