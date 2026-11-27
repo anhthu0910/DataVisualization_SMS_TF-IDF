@@ -1,0 +1,5 @@
+,label,n,median_len,Q1,Q3
+original,ham,4827,52.0,33.0,93.0
+original,spam,747,149.0,133.0,157.0
+deduplicated,ham,4517,53.0,34.0,91.0
+deduplicated,spam,642,148.0,131.0,157.0
