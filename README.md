@@ -275,7 +275,7 @@ Mọi con số dưới đây **phải khớp** các file trong `tables/`. Không
 | Table 3: Mann-Whitney, p Holm, r, D, LPR | `tables/table3_inference.csv` | [ĐIỀN] |
 | Ma trận Jaccard | `tables/jaccard_*.csv` | [ĐIỀN] |
 | Sensitivity S1 | [ĐIỀN: file/ô notebook] | [ĐIỀN] |
-| Kết luận H1 / H2 / H3 | `findings.md` | [ĐIỀN: ủng hộ / bác bỏ] |
+| Kết luận H1 / H2 / H3 | `findings.md` | H1 chỉ ủng hộ phía Spam (13/20), không ủng hộ phía Ham (10/20); H2 ủng hộ (18/20); |
 
 ---
 
