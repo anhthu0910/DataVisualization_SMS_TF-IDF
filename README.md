@@ -193,7 +193,7 @@ TfidfVectorizer được fit trên **toàn bộ** corpus phân tích; thống k�
 
 ---
 
-## 6. Đăng ký trước (pre-registration)
+## 6. Pre-registration
 
 > Mục này được viết và commit **trước khi chạy bất kỳ phân tích TF-IDF nào**.
 > **Commit đăng ký:** `600f245` · **Thời điểm:** `2026-11-26 18:06:35 +0700`
